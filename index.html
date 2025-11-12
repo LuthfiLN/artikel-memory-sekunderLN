@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Sekunder - Storage Tech Future</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ffff;
+            --secondary: #0066ff;
+            --dark: #0a0e27;
+            --darker: #050814;
+            --accent: #ff00ff;
+            --success: #00ff88;
+            --danger: #ff3366;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, #0f1535 50%, var(--dark) 100%);
+            color: #e0e0ff;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background: 
+                    radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%);
+            }
+            50% {
+                background: 
+                    radial-gradient(circle at 80% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%);
+            }
+        }
+
+        /* Header Futuristic */
+        header {
+            position: relative;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            background: linear-gradient(135deg, rgba(15, 25, 41, 0.8) 0%, rgba(20, 40, 70, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary);
+            margin-bottom: 10px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary);
+            }
+            50% {
+                text-shadow: 0 0 30px var(--primary), 0 0 50px var(--secondary), 0 0 70px var(--accent);
+            }
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: var(--primary);
+            font-style: italic;
+            text-shadow: 0 0 10px var(--primary);
+            animation: fadeInOut 4s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation Futuristic */
+        nav {
+            background: linear-gradient(90deg, rgba(10, 14, 39, 0.95) 0%, rgba(15, 30, 70, 0.95) 100%);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--secondary);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95em;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 102, 255, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(0, 102, 255, 0.2) 100%);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        /* Section Futuristic */
+        section {
+            margin: 40px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(15, 40, 80, 0.4) 0%, rgba(10, 25, 60, 0.4) 100%);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-left: 4px solid var(--primary);
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.03) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        section:hover {
+            border-left-color: var(--accent);
+            box-shadow: 0 15px 50px rgba(0, 255, 255, 0.25), 0 0 40px rgba(255, 0, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transform: translateY(-8px);
+            background: linear-gradient(135deg, rgba(15, 50, 90, 0.5) 0%, rgba(10, 30, 70, 0.5) 100%);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 800;
+            text-shadow: 0 0 15px var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        section h3 {
+            color: var(--primary);
+            font-size: 1.5em;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Image Container */
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4), 0 0 60px rgba(0, 102, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        .image-container img:hover {
+            transform: scale(1.08) rotateY(5deg);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.6), 0 0 100px rgba(0, 102, 255, 0.3), 0 0 150px rgba(255, 0, 255, 0.2);
+            filter: brightness(1.1);
+        }
+
+        /* Card Grid Futuristic */
+        .storage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .storage-card {
+            background: linear-gradient(135deg, rgba(20, 60, 100, 0.6) 0%, rgba(15, 40, 80, 0.6) 100%);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 28px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .storage-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .storage-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .storage-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3), 0 0 40px rgba(255, 0, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(25, 80, 120, 0.7) 0%, rgba(20, 50, 90, 0.7) 100%);
+        }
+
+        .storage-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 800;
+            text-shadow: 0 0 10px var(--secondary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-section {
+            margin: 15px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-section h4 {
+            color: var(--accent);
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-shadow: 0 0 10px var(--accent);
+        }
+
+        .card-section p {
+            color: #c0d8ff;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        li {
+            margin: 10px 0;
+            color: #b8d0ff;
+            transition: all 0.3s ease;
+        }
+
+        li:hover {
+            color: var(--primary);
+            padding-left: 10px;
+            text-shadow: 0 0 10px var(--secondary);
+        }
+
+        .pros {
+            border-left: 3px solid var(--success);
+            padding-left: 15px;
+        }
+
+        .pros li::before {
+            content: '✓ ';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .cons {
+            border-left: 3px solid var(--danger);
+            padding-left: 15px;
+        }
+
+        .cons li::before {
+            content: '✕ ';
+            color: var(--danger);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* Table Futuristic */
+        .table-container {
+            overflow-x: auto;
+            margin: 30px 0;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: linear-gradient(135deg, rgba(10, 30, 60, 0.8) 0%, rgba(15, 40, 70, 0.8) 100%);
+        }
+
+        th {
+            background: linear-gradient(90deg, rgba(0, 80, 160, 0.8) 0%, rgba(0, 120, 200, 0.8) 100%);
+            color: var(--primary);
+            padding: 18px;
+            text-align: left;
+            font-weight: 800;
+            border-bottom: 2px solid var(--primary);
+            font-size: 1em;
+            text-shadow: 0 0 10px var(--secondary);
+            box-shadow: inset 0 1px 0 rgba(0, 255, 255, 0.2);
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+            color: #b8d0ff;
+            transition: all 0.3s ease;
+        }
+
+        tr {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        tr::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        tr:hover::before {
+            opacity: 1;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 255, 255, 0.15);
+        }
+
+        tr:hover td {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--secondary);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(20, 50, 90, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, rgba(15, 25, 50, 0.9) 0%, rgba(10, 20, 40, 0.9) 100%);
+            color: var(--primary);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 2px solid var(--primary);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 -8px 32px rgba(0, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        footer p {
+            margin: 8px 0;
+            font-weight: 500;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2em;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+
+            section {
+                padding: 25px;
+                margin: 25px 0;
+            }
+
+            .storage-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+        }
+
+        /* Scroll Animation */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        section:nth-child(even) {
+            animation-delay: 0.1s;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 102, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--accent), var(--primary));
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>⚡ MEMORY SEKUNDER</h1>
+        <p>Next Generation Storage Technology Guide</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#hdd">HDD</a></li>
+            <li><a href="#ssd">SSD</a></li>
+            <li><a href="#nvme">NVMe</a></li>
+            <li><a href="#flash">FLASH</a></li>
+            <li><a href="#optical">OPTICAL</a></li>
+            <li><a href="#cloud">CLOUD</a></li>
+            <li><a href="#tape">TAPE</a></li>
+            <li><a href="#memory-card">MEMORY</a></li>
+            <li><a href="#comparison">COMPARE</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- HDD Section -->
+        <section id="hdd">
+            <h2>⚙️ HARD DISK DRIVE</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/093d7438-72eb-46a3-8591-a8f97154d435.png" alt="Hard Disk Drive HDD">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>Hard Disk Drive adalah media penyimpanan yang menggunakan piringan magnetik berputar untuk menyimpan data. Kepala baca/tulis bergerak di atas permukaan disk untuk mengakses informasi. HDD telah menjadi standar industri selama puluhan tahun.</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>HDD berfungsi menyimpan sistem operasi, aplikasi, dan file pengguna dalam jumlah besar dengan kapasitas hingga beberapa terabyte. Perangkat ini bertindak sebagai backing storage untuk RAM dan menyediakan penyimpanan data masif untuk server dan data center.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Kapasitas sangat besar (500 GB - 18 TB+) dengan harga paling terjangkau per gigabyte</li>
+                    <li>Harga total murah, cocok untuk budget terbatas dan penyimpanan masif</li>
+                    <li>Umur pakai panjang dengan keandalan tinggi jika dirawat baik dan kompatibel luas dengan berbagai perangkat</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Kecepatan lambat (100-200 MB/s) karena adanya komponen mekanik yang bergerak</li>
+                    <li>Mudah rusak jika terjatuh atau terguncang, dan konsumsi daya tinggi dengan suara bising</li>
+                    <li>Ukuran besar tidak cocok untuk perangkat portabel, boot sistem lebih lama dari storage modern</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SSD Section -->
+        <section id="ssd">
+            <h2>⚡ SOLID STATE DRIVE</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/bab24179-40b8-4026-9542-43778d349264.png" alt="Solid State Drive SSD">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>Solid State Drive adalah perangkat penyimpanan yang menggunakan teknologi flash memory tanpa komponen mekanik bergerak. Data disimpan dalam sel-sel memori semikonduktor yang dapat diakses langsung dan cepat, memberikan respons sistem jauh lebih cepat dari HDD.</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>SSD dirancang meningkatkan performa sistem keseluruhan dengan mempercepat boot sistem operasi dan akses aplikasi. Ideal untuk gaming, editing video, dan desain grafis karena aksesnya yang cepat. Dengan tidak ada komponen mekanik, SSD mencegah kehilangan data tiba-tiba.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Kecepatan tinggi (550 MB/s) 3-4x lebih cepat dari HDD dengan boot Windows hanya 15-30 detik</li>
+                    <li>Hemat energi tanpa gerakan mekanik, tahan guncangan, operasi tanpa suara</li>
+                    <li>Ukuran ringkas ideal untuk laptop dan perangkat portabel dengan akses data hampir instant</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Harga 2-3x lebih mahal dari HDD, kapasitas terbatas maksimal 4 TB</li>
+                    <li>Flash memory memiliki siklus penulisan terbatas (3.000-100.000 siklus) dan performa dapat degradasi seiring waktu</li>
+                    <li>Tidak ideal untuk penyimpanan server masif karena biaya tinggi dan kapasitas terbatas</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- NVMe Section -->
+        <section id="nvme">
+            <h2>🚀 SSD NVME M.2</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/971b3ee7-65dd-4b2c-88d2-f69b59e62737.png" alt="SSD NVMe M.2">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>NVMe (Non-Volatile Memory Express) adalah generasi terbaru SSD yang menggunakan protokol PCIe untuk koneksi langsung ke motherboard. Format fisiknya M.2 sangat kompak (22mm × 80mm) dengan transfer data jauh lebih tinggi dibanding SSD SATA konvensional.</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>NVMe memberikan penyimpanan dengan performa tertinggi untuk workstation dan server profesional. Perangkat ini meningkatkan kecepatan boot dan loading aplikasi dramatis, hanya membutuhkan 5-10 detik untuk startup. NVMe ideal untuk rendering video 4K/8K, desain 3D, dan gaming dengan loading instant.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Kecepatan luar biasa (3.500-7.000 MB/s) jauh melampaui SSD SATA dengan latensi sangat rendah</li>
+                    <li>Efisiensi energi maksimal mampu memproses ribuan perintah bersamaan dengan performa tertinggi</li>
+                    <li>Ukuran ultra-kompak M.2 menghemat ruang motherboard, ideal untuk pekerjaan profesional dan gaming kompetitif</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Harga sangat mahal 2-3x lebih mahal dari SSD SATA biasa dan kompatibilitas terbatas dengan motherboard lama (pre-2017)</li>
+                    <li>Peningkatan performa hanya nyata untuk tugas berat spesifik, untuk pengguna casual dianggap berlebihan</li>
+                    <li>Beberapa model menghasilkan panas memerlukan heatsink dan tidak cocok untuk PC lama yang ingin di-upgrade</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Flash Drive Section -->
+        <section id="flash">
+            <h2>💾 USB FLASH DRIVE</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/61c161b0-396a-4a88-9acd-9a5b84f9e99c.png" alt="USB Flash Drive">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>Flash drive adalah perangkat penyimpanan portabel berukuran kecil seperti pen yang menggunakan teknologi flash memory. Terhubung ke komputer melalui port USB, memiliki bentuk mudah dibawa untuk transfer file antar perangkat.</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>Flash drive berfungsi mentransfer file antar perangkat dengan mudah dan cepat. Perangkat ini menyimpan backup data portabel, menjalankan portable applications tanpa instalasi, dan sering digunakan untuk instalasi sistem operasi atau program di komputer lain.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Ukuran sangat kecil dan ringan mudah dibawa, kompatibel dengan semua perangkat berport USB</li>
+                    <li>Kecepatan transfer cepat terutama USB 3.0/3.1 hingga 500 MB/detik dengan harga terjangkau (8 GB - 2 TB)</li>
+                    <li>Plug and play tanpa instalasi driver, tahan lama tanpa komponen mekanik dengan data transfer instant</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Ukuran kecil meningkatkan risiko kehilangan atau terlupakan dan mudah tersenggol dari tekanan tidak disengaja</li>
+                    <li>Kapasitas maksimal 2 TB lebih kecil dari hard drive eksternal, risiko keamanan tinggi mudah dicuri</li>
+                    <li>Jika dicabut saat transfer, data bisa corrupt dan tidak memiliki perlindungan ketat dari air dan debu</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Optical Disk Section -->
+        <section id="optical">
+            <h2>📀 OPTICAL DISK</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/25c63bbf-088c-4152-a582-aae1c593ed4b.png" alt="Optical Disk DVD CD Blu-ray">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>Optical Disk adalah media penyimpanan yang menggunakan teknologi laser untuk membaca dan menulis data pada permukaan disk berlapis. Jenis utama: CD (700-800 MB), DVD (4,7-8,5 GB), dan Blu-ray (25-50 GB).</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>Optical disk berfungsi menyimpan musik dan file audio berkualitas tinggi, mendistribusikan film dan video dalam format DVD atau Blu-ray. Media ini digunakan untuk backup data besar dengan format standar industri, menyimpan software dan game, serta arsip data jangka panjang untuk dokumen penting.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Data tersimpan permanen hingga puluhan tahun (20-50 tahun) dengan harga per disk sangat murah</li>
+                    <li>Dapat dibaca oleh berbagai perangkat kompatibel dengan format standar universal</li>
+                    <li>Sempurna sebagai backup offline independen dari internet dan keamanan data tinggi</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Kapasitas jauh lebih kecil dari hard drive modern dan kecepatan transfer sangat lambat (1-5 MB/detik)</li>
+                    <li>Goresan atau jamur merusak data total, proses overwrite sulit memerlukan penghapusan penuh</li>
+                    <li>Perangkat pembaca semakin jarang ditemukan di komputer modern, data dapat degradasi setelah 20-30 tahun</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Cloud Storage Section -->
+        <section id="cloud">
+            <h2>☁️ CLOUD STORAGE</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/dac71b5b-9e3f-4618-b33f-588cff723cb7.png" alt="Cloud Storage Internet">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>Cloud Storage adalah layanan penyimpanan data berbasis internet yang memungkinkan pengguna menyimpan dan mengakses file melalui server di berbagai lokasi geografis. Data disimpan di server pihak ketiga dan dapat diakses dari mana saja dengan koneksi internet (Google Drive, Dropbox, OneDrive, iCloud, AWS S3).</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>Cloud storage menyediakan penyimpanan file online dapat diakses kapan saja dari berbagai perangkat. Fitur sinkronisasi otomatis mengantar update ke semua perangkat, memungkinkan kolaborasi tim real-time pada dokumen bersama. Backup otomatis dan pemulihan bencana memberikan keamanan data maksimal.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Aksesibilitas global dari mana saja dengan internet melalui browser atau aplikasi di berbagai perangkat</li>
+                    <li>Sinkronisasi otomatis dan kolaborasi real-time memudahkan tim bekerja bersama dengan backup otomatis</li>
+                    <li>Enkripsi tinggi, kapasitas scalable unlimited, dan tidak perlu membeli hardware mahal</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Bergantung pada koneksi internet stabil, tidak bisa akses jika internet down dan kecepatan terbatas bandwidth</li>
+                    <li>Keamanan data bergantung sepenuhnya pada provider pihak ketiga dan privacy concerns karena data di server lain</li>
+                    <li>Biaya berkelanjutan untuk paket berbayar, penyimpanan gratis terbatas 5-15 GB saja, dan risiko data hilang jika provider tutup</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Magnetic Tape Section -->
+        <section id="tape">
+            <h2>🎞️ MAGNETIC TAPE</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/a3148618-48f9-41e0-9c1d-fc7d3aea24b9.png" alt="Magnetic Tape Cartridge">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>Magnetic Tape adalah media penyimpanan berupa pita plastik berlapis bahan magnetik (ferroksida atau barium ferrite). Data disimpan secara berurutan pada pita dalam cartridge. Meskipun teknologi tertua, magnetic tape masih digunakan luas untuk backup besar dan arsip enterprise karena keunggulan ekonomis.</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>Magnetic tape berfungsi untuk backup data sangat besar pada perusahaan dan data center dengan kapasitas terabyte hingga petabyte. Media ini digunakan untuk arsip jangka panjang data historis dan compliance regulatory yang mengharuskan penyimpanan bertahun-tahun. Magnetic tape menyimpan video recording berkualitas tinggi dan sistem I/O komputer mainframe.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Kapasitas sangat besar (140 GB - 18 TB+ per cartridge) dengan harga paling murah per gigabyte dari semua media</li>
+                    <li>Daya tahan ekstrem 20-50+ tahun tanpa degradasi dan kecepatan transfer tinggi sequential (500+ MB/detik)</li>
+                    <li>Total cost of ownership terendah untuk backup jangka panjang dan independen dari daya listrik</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Akses data sangat lambat berurutan dari awal, random access tidak efisien bisa memakan waktu berjam-jam</li>
+                    <li>Memerlukan perangkat khusus mahal (tape drive) dengan maintenance mahal dan kalibrasi rutin</li>
+                    <li>Rentan kerusakan dari suhu ekstrem, kelembaban tinggi, medan magnetik, dan sulit didaur ulang</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Memory Card Section -->
+        <section id="memory-card">
+            <h2>🎴 MEMORY CARD</h2>
+            <div class="image-container">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/dbfb6454-5a53-43e6-bffa-35003c41354a.png" alt="Memory Card SD Micro SD">
+            </div>
+            <div class="storage-grid">
+                <div class="storage-card">
+                    <h3>📖 KONSEP</h3>
+                    <p>Memory Card adalah perangkat penyimpanan kecil berbasis teknologi flash memory, terutama Secure Digital (SD) Card dan Micro SD Card. Digunakan pada perangkat portabel seperti kamera digital, smartphone, dan tablet untuk menyimpan foto, video, dan file lainnya.</p>
+                </div>
+                <div class="storage-card">
+                    <h3>⚙️ FUNGSI</h3>
+                    <p>Memory card berfungsi menyimpan foto dan video pada kamera digital DSLR dan mirrorless dengan kapasitas besar. Perangkat ini memperluas kapasitas penyimpanan smartphone dan tablet, menyimpan file multimedia, dan backup data pribadi pada perangkat mobile. Memory card juga menyimpan data konfigurasi pada router, drone, dan gimbal.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>✅ KEUNGGULAN</h3>
+                <ul class="pros">
+                    <li>Ukuran micro-SD sangat kompak (15mm × 11mm) memudahkan portabilitas ekstrem dengan kapasitas hingga 2 terabyte</li>
+                    <li>Kecepatan cepat terutama SD UHS hingga 250+ MB/detik cocok untuk video 4K dengan harga relatif murah</li>
+                    <li>Tahan guncangan tanpa komponen mekanik, data bertahan 10-25 tahun, tahan kondisi ekstrem (air, debu, suhu)</li>
+                </ul>
+                <h3 style="margin-top: 15px;">❌ KELEMAHAN</h3>
+                <ul class="cons">
+                    <li>Risiko kehilangan tinggi karena ukuran sangat kecil dan mudah corrupt atau terinfeksi virus</li>
+                    <li>Biaya per gigabyte tinggi dibanding HDD atau flash drive dengan siklus baca/tulis terbatas</li>
+                    <li>Tidak cocok penyimpanan besar jangka panjang, write speed terbatas untuk video, recovery data sulit jika formatted</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Comparison Table Section -->
+        <section id="comparison">
+            <h2>📊 PERBANDINGAN TEKNOLOGI STORAGE</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PARAMETER</th>
+                            <th>HDD</th>
+                            <th>SSD</th>
+                            <th>NVME</th>
+                            <th>FLASH</th>
+                            <th>OPTICAL</th>
+                            <th>CLOUD</th>
+                            <th>TAPE</th>
+                            <th>MEMORY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>KECEPATAN</strong></td>
+                            <td>Lambat</td>
+                            <td>Cepat</td>
+                            <td>Ultra Cepat</td>
+                            <td>Sedang</td>
+                            <td>Sangat Lambat</td>
+                            <td>Internet</td>
+                            <td>Sedang</td>
+                            <td>Cepat</td>
+                        </tr>
+                        <tr>
+                            <td><strong>KAPASITAS</strong></td>
+                            <td>Sangat Besar</td>
+                            <td>Sedang</td>
+                            <td>Sedang</td>
+                            <td>Terbatas</td>
+                            <td>Sangat Terbatas</td>
+                            <td>Unlimited</td>
+                            <td>Sangat Besar</td>
+                            <td>Terbatas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HARGA</strong></td>
+                            <td>Terjangkau</td>
+                            <td>Mahal</td>
+                            <td>Sangat Mahal</td>
+                            <td>Murah</td>
+                            <td>Murah</td>
+                            <td>Berlangganan</td>
+                            <td>Termurah</td>
+                            <td>Mahal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PORTABILITAS</strong></td>
+                            <td>Rendah</td>
+                            <td>Sedang</td>
+                            <td>Sedang</td>
+                            <td>Tinggi</td>
+                            <td>Sedang</td>
+                            <td>Tinggi</td>
+                            <td>Rendah</td>
+                            <td>Sangat Tinggi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DURABILITAS</strong></td>
+                            <td>Sedang</td>
+                            <td>Tinggi</td>
+                            <td>Tinggi</td>
+                            <td>Tinggi</td>
+                            <td>Tinggi</td>
+                            <td>Tinggi</td>
+                            <td>Sangat Tinggi</td>
+                            <td>Tinggi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AKSES DATA</strong></td>
+                            <td>Random</td>
+                            <td>Random</td>
+                            <td>Random</td>
+                            <td>Random</td>
+                            <td>Sequential</td>
+                            <td>Random</td>
+                            <td>Sequential</td>
+                            <td>Random</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p><strong>⚡ MEMORY SEKUNDER - TEKNOLOGI PENYIMPANAN MASA DEPAN ⚡</strong></p>
+        <p>Panduan komprehensif untuk memahami dan memilih solusi penyimpanan data optimal</p>
+        <p>&copy; 2025 - Advanced Computer Architecture | Next Gen Storage Systems</p>
+    </footer>
+
+</body>
+</html>
